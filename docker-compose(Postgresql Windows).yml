@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+
+  db:
+    image: postgres
+    container_name: meu_postgres_4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+      DEFAULT_DB_SCHEMA: ${DEFAULT_DB_SCHEMA}
+      POSTGRES_DB: ${DEFAULT_DATABASE}
+    # restart: always
+    env_file:
+      - .env
+    volumes:
+      # Mapeando o volume para persistência de dados
+      - db_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d/
+    ports:
+      # Mapeando a porta para acesso externo (opcional)
+      - "5432:5432"
+    networks:
+      - network-ubs
+
+volumes:
+  # Definindo o volume para persistência dos dados
+  db_data:
+
+
+networks:
+  network-ubs:
+    driver: bridge
